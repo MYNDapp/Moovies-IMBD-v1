@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Inception",
+    "year": 2010,
+    "genres": [
+      "Sci\u2011Fi",
+      "Thriller"
+    ],
+    "poster": "posters/inception.png",
+    "landscape": "posters/inception-land.png"
+  },
+  {
+    "title": "The Dark Knight",
+    "year": 2008,
+    "genres": [
+      "Action",
+      "Crime"
+    ],
+    "poster": "posters/the-dark-knight.png",
+    "landscape": "posters/the-dark-knight-land.png"
+  },
+  {
+    "title": "The Godfather",
+    "year": 1972,
+    "genres": [
+      "Crime",
+      "Drama"
+    ],
+    "poster": "posters/the-godfather.png",
+    "landscape": "posters/the-godfather-land.png"
+  },
+  {
+    "title": "Parasite",
+    "year": 2019,
+    "genres": [
+      "Thriller",
+      "Drama"
+    ],
+    "poster": "posters/parasite.png",
+    "landscape": "posters/parasite-land.png"
+  },
+  {
+    "title": "Toy Story",
+    "year": 1995,
+    "genres": [
+      "Animation",
+      "Family"
+    ],
+    "poster": "posters/toy-story.png",
+    "landscape": "posters/toy-story-land.png"
+  },
+  {
+    "title": "Avengers: Endgame",
+    "year": 2019,
+    "genres": [
+      "Action",
+      "Adventure"
+    ],
+    "poster": "posters/avengers-endgame.png",
+    "landscape": "posters/avengers-endgame-land.png"
+  },
+  {
+    "title": "Interstellar",
+    "year": 2014,
+    "genres": [
+      "Sci\u2011Fi",
+      "Drama"
+    ],
+    "poster": "posters/interstellar.png",
+    "landscape": "posters/interstellar-land.png"
+  },
+  {
+    "title": "La La Land",
+    "year": 2016,
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "poster": "posters/la-la-land.png",
+    "landscape": "posters/la-la-land-land.png"
+  },
+  {
+    "title": "Gladiator",
+    "year": 2000,
+    "genres": [
+      "Action",
+      "Adventure"
+    ],
+    "poster": "posters/gladiator.png",
+    "landscape": "posters/gladiator-land.png"
+  },
+  {
+    "title": "Coco",
+    "year": 2017,
+    "genres": [
+      "Animation",
+      "Family"
+    ],
+    "poster": "posters/coco.png",
+    "landscape": "posters/coco-land.png"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "name": "movie-prediction-prototype",
+  "version": "1.2.0",
+  "description": "IMBd-style header + search + landscape carousel + genre rows; instant push to performer.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}

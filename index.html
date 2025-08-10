@@ -1,0 +1,41 @@
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IMBd — Browse</title>
+<script src="/socket.io/socket.io.js"></script>
+<style>
+:root{--yellow:#f5c518;--bg:#0a0a0a;--panel:#111;--border:#242424;--muted:#a1a1a1}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f3f3f3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.header{display:flex;align-items:center;gap:12px;background:var(--yellow);color:#000;padding:10px 12px;position:sticky;top:0;z-index:20}
+.logo{font-weight:900;background:#000;color:var(--yellow);padding:6px 10px;border-radius:6px;letter-spacing:.5px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.icon-btn{background:#00000022;border:1px solid #00000033;color:#000;padding:6px 10px;border-radius:8px;font-weight:600}
+.search-bar{padding:10px 12px;background:#0e0e0e;border-bottom:1px solid var(--border)}
+.search-input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:#070707;color:#eee;font-size:15px}
+.hero{position:relative;margin:12px}
+.hero-track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.hero-card{min-width:86vw;height:40vw;max-height:260px;background:#151515;border:1px solid var(--border);border-radius:14px;scroll-snap-align:center;position:relative;overflow:hidden}
+.hero-card img{width:100%;height:100%;object-fit:cover;opacity:.92}
+.hero-title{position:absolute;left:10px;bottom:10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.7));padding:10px;border-radius:10px;font-weight:800}
+.rows{padding:0 12px 20px}
+.row{margin-top:16px}
+.row h3{margin:0 0 10px 2px;font-size:16px}
+.row-track{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.tile{width:120px}
+.poster{width:120px;height:180px;border-radius:10px;border:1px solid var(--border);object-fit:cover;background:#0f0f0f;scroll-snap-align:start}
+.title{font-size:12px;margin-top:6px;color:#ddd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.muted{color:var(--muted)}.hidden{display:none!important}
+</style></head><body>
+<div class="header"><div class="logo">IMBd</div><div class="header-right"><button class="icon-btn" id="searchBtn">Search</button><button class="icon-btn">Sign In</button></div></div>
+<div class="search-bar"><input id="q" class="search-input" placeholder="Search any film" /></div>
+<section class="hero"><div class="hero-track" id="heroTrack"></div></section>
+<div class="rows" id="rows"></div>
+<script>
+const params=new URLSearchParams(location.search);const code=params.get('s');const socket=io();if(code)socket.emit('joinSession',code);
+let MOVIES=[];fetch('movies.json').then(r=>r.json()).then(ms=>{MOVIES=ms;buildHero();renderRows();autoScrollHero();});
+function buildHero(){const track=document.getElementById('heroTrack');track.innerHTML='';const featured=[...MOVIES].sort((a,b)=>(b.year||0)-(a.year||0)).slice(0,6);for(const m of featured){const card=document.createElement('div');card.className='hero-card';const img=document.createElement('img');img.src=m.landscape||m.poster;card.appendChild(img);const cap=document.createElement('div');cap.className='hero-title';cap.textContent=m.title+(m.year?' • '+m.year:'');card.appendChild(cap);card.addEventListener('click',()=>select(m));track.appendChild(card);}}
+function autoScrollHero(){const track=document.getElementById('heroTrack');let i=0;setInterval(()=>{if(!track.children.length)return;i=(i+1)%track.children.length;track.children[i].scrollIntoView({behavior:'smooth',inline:'center'});},4000);}
+function groupByGenre(list){const map=new Map();for(const m of list){const gs=(m.genres&&m.genres.length)?m.genres:['Other'];for(const g of gs){if(!map.has(g))map.set(g,[]);map.get(g).push(m);}}for(const [g,arr] of map)arr.sort((a,b)=>(b.year||0)-(a.year||0));return Array.from(map.entries()).sort((a,b)=>a[0].localeCompare(b[0]));}
+function renderRows(term=''){const rows=document.getElementById('rows');rows.innerHTML='';const lower=term.toLowerCase();const groups=groupByGenre(MOVIES);for(const [genre,items] of groups){const row=document.createElement('div');row.className='row';const h=document.createElement('h3');h.textContent=genre;row.appendChild(h);const track=document.createElement('div');track.className='row-track';for(const m of items){const tile=document.createElement('div');tile.className='tile';const poster=document.createElement('img');poster.className='poster';poster.src=m.poster;tile.appendChild(poster);const t=document.createElement('div');t.className='title';t.textContent=m.title;tile.appendChild(t);tile.addEventListener('click',()=>select(m));if(lower){const match=m.title.toLowerCase().includes(lower)||(m.genres||[]).some(g=>g.toLowerCase().includes(lower));if(!match)tile.classList.add('hidden');}track.appendChild(tile);}row.appendChild(track);rows.appendChild(row);}}
+const q=document.getElementById('q');q.addEventListener('input',()=>renderRows(q.value.trim()));document.getElementById('searchBtn').addEventListener('click',()=>q.focus());
+function select(m){if(!code){alert('No active session');return;}socket.emit('selectMovie',{code, movie:m});try{if(navigator.vibrate)navigator.vibrate(15);}catch{}}
+</script></body></html>
